@@ -19,5 +19,9 @@ func main() {
 
 	r.GET("/api/v1/quotes/daily", h.GetDaily)
 
+	r.POST("/api/v1/admin/quotes", h.Create)
+
+	r.GET("/api/v1/admin/quotes", h.GetAll)
+
 	r.Run(":8080")
 }

@@ -1,11 +1,11 @@
 package service
 
 import (
+	"asbowo-api/internal/model"
+	"asbowo-api/internal/repository"
 	"errors"
 	"math/rand/v2"
 	"time"
-	"asbowo-api/internal/model"
-	"asbowo-api/internal/repository"
 )
 
 type QuoteService struct {
@@ -32,4 +32,30 @@ func (s *QuoteService) GetDailyQuote(now time.Time) (model.Quote, error) {
 	offset := r.IntN(total)
 
 	return s.repo.GetByOffset(offset)
+}
+
+func (s *QuoteService) CreateNewQuote(text string) (model.Quote, error) {
+	total, err := s.repo.Count()
+
+	if err != nil {
+		return model.Quote{}, err
+	}
+
+	newQuote := model.Quote{
+		ID: total + 1,
+		Text: text,
+		CreatedAt: time.Now(),
+	}
+
+	err = s.repo.Create(newQuote)
+
+	if err != nil {
+		return model.Quote{}, err
+	}
+
+	return newQuote, nil
+}
+
+func (s *QuoteService) GetAllQuotes() ([]model.Quote, error) {
+	return s.repo.GetAll()
 }
