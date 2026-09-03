@@ -11,13 +11,13 @@ type MemoryQuoteRepository struct {
 }
 
 func NewMemoryQuoteRepository() *MemoryQuoteRepository {
-	now := time.Now()
+	initialData := append([]model.Quote{}, defaultQuotes...)
+
+	for i := range initialData {
+		initialData[i].CreatedAt = time.Now()
+	}
 	return &MemoryQuoteRepository{
-		quotes: []model.Quote{
-			{ID: 1, Text: "Ndhasmu etik!", CreatedAt: now},
-			{ID: 2, Text: "Masak air biar mateng!", CreatedAt: now},
-			{ID: 3, Text: "Omon-omon saja.", CreatedAt: now},
-		},
+		quotes: initialData,
 	}
 }
 
